@@ -1,0 +1,9 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ItineraryBuilder.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ItineraryBuilder_SchedulesConnectionsService_SchedulesConnectionsService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://www.pathfinder-xml.com/soap/*/services/SchedulesConnections</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

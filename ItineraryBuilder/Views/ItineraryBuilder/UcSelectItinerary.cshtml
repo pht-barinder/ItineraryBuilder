@@ -1,0 +1,165 @@
+﻿@model List<ItineraryBuilder.Models.FlightStat>
+@{
+    ItineraryBuilder.Models.ItinerarySearch its = (ItineraryBuilder.Models.ItinerarySearch)(ViewData["ItinerarySearch"]);
+}
+@if (Model != null && Model.Count > 0)
+{
+    <form id="frmFlightData" action="/ItineraryBuilder/SaveSelectedFlightData">
+    <input type="hidden" name="Id" id="Id" value="@its.Id" />
+    <input type="hidden" name="OpportunityId" value="@its.OpportunityId" />
+    <input type="hidden" name="AirlineCode" value="@its.AirlineCode" />
+    <input type="hidden" name="FlightID" value="@its.FlightID" />
+    <input type="hidden" name="FlightNumber" value="@its.FlightNumber" />
+    <input type="hidden" name="FlightRequestID" value="@its.FlightRequestID" />
+    <input type="hidden" name="From"  value="@its.From" />
+    <input type="hidden" name="FromDate"  value="@its.FromDate" />
+    <input type="hidden" name="ItinerarySearchID" id="ItinerarySearchID" value="@Model.FirstOrDefault().ItinerarySearchID" />
+    <input type="hidden" name="isInsert" id="isInsert" value="@ViewData["isInsert"]" />
+    <table style="margin-left: 10px;" id="MainTable">
+        <thead>
+            <th align="left">
+                Day
+            </th>
+            <th align="left">
+                Date
+            </th>
+            <th align="left">
+                Flight
+            </th>
+            <th align="left">
+                City
+            </th>
+            <th align="left">
+                Time
+            </th>
+        </thead>
+        <tbody>
+            <tr>
+                <td align="left" style="width: 30px">
+                    -----
+                </td>
+                <td align="left" style="width: 50px">
+                    ---------
+                </td>
+                <td align="left" style="width: 150px">
+                    --------------------------
+                </td>
+                <td align="left" style="width: 180px">
+                    ------------------------------------
+                </td>
+                <td align="left" style="width: 100px">
+                    -------------------
+                </td>
+            </tr>
+            @{int i = 0;
+              foreach (var fs in Model.OrderBy(p => p.DepartureTime))
+              {
+                <tr>
+                    <td style="padding-bottom: 10px; vertical-align: top">
+                        <input type="checkbox" id="chk@(i)" onclick="ChangeStatus(this);" />
+                        <input type="hidden" class="clsInclude" name="listFS[@i].IsInclude" value="@(fs.Id)"/>
+                        <input type="hidden" name="listFS[@i].id" value="@(fs.Id)"/>
+                        <input type="hidden" name="listFS[@i].ItinerarySearchID" value="@(fs.ItinerarySearchID)"/>
+                        <input type="hidden" name="listFS[@i].DepartureDateFrom" value="@(fs.DepartureDateFrom)"/>
+                        <input type="hidden" name="listFS[@i].DepartureTime" value="@(fs.DepartureTime)"/>
+                        <input type="hidden" name="listFS[@i].ArrivalTime" value="@(fs.ArrivalTime)"/>
+                        <input type="hidden" name="listFS[@i].FlightDurationMinutes" value="@(fs.FlightDurationMinutes)"/>
+                        <input type="hidden" name="listFS[@i].DistanceMiles" value="@(fs.DistanceMiles)"/>
+                        <input type="hidden" name="listFS[@i].FlightNumber" value="@(fs.FlightNumber)"/>
+                        <input type="hidden" name="listFS[@i].CarrierName" value="@(fs.CarrierName)"/>
+                        <input type="hidden" name="listFS[@i].DepartureAirportName" value="@(fs.DepartureAirportName)"/>
+                        <input type="hidden" name="listFS[@i].DepartureAirportCity" value="@(fs.DepartureAirportCity)"/>
+                        <input type="hidden" name="listFS[@i].DepartureAirportStateCode" value="@(fs.DepartureAirportStateCode)"/>
+                        <input type="hidden" name="listFS[@i].DepartureAirportCountryCode" value="@(fs.DepartureAirportCountryCode)"/>
+                        <input type="hidden" name="listFS[@i].CarrierAirlineCode" value="@(fs.CarrierAirlineCode)"/>
+                        <input type="hidden" name="listFS[@i].FlightNumber" value="@(fs.FlightNumber)"/>
+                        <input type="hidden" name="listFS[@i].ArrivalAirportName" value="@(fs.ArrivalAirportName)"/>
+                        <input type="hidden" name="listFS[@i].ArrivalAirportCity" value="@(fs.ArrivalAirportCity)"/>
+                        <input type="hidden" name="listFS[@i].ArrivalAirportStateCode" value="@(fs.ArrivalAirportStateCode)"/>
+                        <input type="hidden" name="listFS[@i].ArrivalAirportCountryCode" value="@(fs.ArrivalAirportCountryCode)"/>
+                        <input type="hidden" name="listFS[@i].AircraftTypeName" value="@(fs.AircraftTypeName)"/>
+                        @(fs.DepartureDateFrom.ToString("ddd"))
+                    </td>
+                    <td style="padding-bottom: 10px; vertical-align: top">
+                        @(fs.DepartureDateFrom.ToString("ddMMM"))
+                    </td>
+                    <td style="padding-bottom: 10px; vertical-align: top">
+                        @(fs.CarrierName)<br />
+                        @(fs.FlightNumber)
+                    </td>
+                    <td style="padding-bottom: 10px; vertical-align: top">
+                        @(fs.DepartureAirportCity)<br />
+                        @(fs.ArrivalAirportCity)
+                    </td>
+                    <td style="padding-bottom: 10px; vertical-align: top">
+                        @{
+                    DateTime DepartureTime = Convert.ToDateTime(fs.DepartureTime);
+                    DateTime ArrivalTime = Convert.ToDateTime(fs.ArrivalTime);
+                        }
+                        @(DepartureTime.ToString("hh:mm tt"))<br />
+                        @(ArrivalTime.ToString("hh:mm tt"))
+                    </td>
+                </tr>
+                    i += 1;
+              }
+            }
+        </tbody>
+    </table>
+    </form>
+}
+<input type="button" value="Submit" onclick="SaveSelectedFlightData();" />
+<input type="button" value="Cancel" onclick="CancelSelectedFlightData();" />
+<input type="hidden" value="@ViewData["Id"]" id="LastId"/>
+<input type="hidden" value="@ViewData["Message"]" id="msg"/>
+<input type="hidden" value="@ViewData["isMultiple"]" id="isMultiple"/>
+<input type="hidden" value="@ViewData["RowID"]" id="RowID"/>
+<script type="text/javascript">
+
+    function ChangeStatus(e) {
+        var obj = $(e);
+        if ($(obj).is(':checked')) {
+            $(obj).parents("tr:first").find(".clsInclude").val(1);
+        }
+        else {
+            $(obj).parents("tr:first").find(".clsInclude").val(0);
+
+        }
+    }
+
+    function SaveSelectedFlightData() {
+        var indexIds = "";
+        $("#MainTable").find("input:checkbox").each(function (index) {
+            var id = $(this).attr("id");
+            var IsLeadCanceled = $("#chk0").attr("checked");
+            if ($(this).val() == "on") {
+                if (indexIds == "") {
+                    indexIds = index
+                }
+                else {
+                    indexIds += "," + index;
+                }
+            }
+        })
+        
+        var frm = $("#frmFlightData").serialize();
+        var ItinerarySearchID = $("#ItinerarySearchID").val();
+        var opportunityId = $("#opportunityId").val();
+        var flightRequestID = $("#flightRequestID").val();
+        $.post("/ItineraryBuilder/SaveSelectedFlightData", frm, function (data) {
+            $("#DivResult").html(data);
+            alert($("#DivResult").find("#LastId").val());
+            if ($("#RowID").val() == 0) {
+                $("#RowID").val($("#DivResult").find("#LastId").val());
+            }
+            $.unblockUI();
+        });
+    }
+
+    function CancelSelectedFlightData() {
+        var ItinerarySearchID = $("#ItinerarySearchID").val();
+        $.post("/ItineraryBuilder/CancelSelectedFlightData", { ItinerarySearchID: ItinerarySearchID }, function (data) {
+            //$("#DivResult").html(data);
+            $.unblockUI();
+        });
+    }
+</script>

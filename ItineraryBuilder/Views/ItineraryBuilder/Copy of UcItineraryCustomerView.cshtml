@@ -1,0 +1,135 @@
+﻿@model List<ItineraryBuilder.Models.ItinerarySearch>
+
+@{
+    
+    Layout = null;
+
+    ItineraryBuilder.Repository.DbRepository _db = new ItineraryBuilder.Repository.DbRepository();
+}
+@if (Model != null && Model.Count > 0)
+{
+    int j = 1;
+
+    foreach (var grp in Model.GroupBy(p => p.FlightID))
+    {
+        TimeSpan t = TimeSpan.FromMinutes(grp.Sum(p => p.FlightStat.FlightDurationMinutes));
+        var hours = (int)t.TotalHours;
+        var minutes = t.Minutes;
+    <div class="Info Clear">
+        <div class="Info-Header">
+            <p class="Logo-Plane">
+                Flight
+                @grp.Key</p>
+            <p class="ML35">
+                @grp.Min(p => p.From).Value.ToString("ddd, MMM dd")</p>
+            <p class="ML20">
+                @grp.OrderBy(p => p.From).ThenBy(p => p.FlightStat.DepartureDateTo).ThenBy(p => p.FlightStat.DepartureTime).FirstOrDefault().FlightStat.DepartureAirportCode<span>
+                    to </span>@grp.OrderBy(p => p.From).ThenBy(p => p.FlightStat.DepartureDateTo).ThenBy(p => p.FlightStat.DepartureTime).LastOrDefault().FlightStat.ArrivalAirportCode@*<span> - 1 stop</span>*@</p>
+            @*<p style="float: right">
+                @(hours)h @(minutes)m</p>*@
+        </div>
+        @{
+                         int day = 0;
+                         string FlightNumber = string.Empty;
+                         DateTime? from = null;
+                         foreach (var its in Model.Where(p => p.FlightID == grp.Key).OrderBy(p => p.From).ThenBy(p => p.FlightStat.DepartureDateTo).ThenBy(p => p.FlightStat.DepartureTime))
+                         {
+                             int i = _db.GetFlightDataByItineraryID(its.Id).Count();
+
+                             t = TimeSpan.FromMinutes(its.FlightStat.FlightDurationMinutes);
+                             hours = (int)t.TotalHours;
+                             minutes = t.Minutes;
+
+            <div class="Info-Inner">
+                <div class="Flights">
+                    @(its.FlightStat.CarrierName)
+                    - Flight @(its.FlightStat.FlightNumber)<p>
+                        @(hours)h @(minutes)m</p>
+                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td style="width: 100px;">
+                                Take-off
+                            </td>
+                            <td style="width: 100px;">
+                                @{
+                              DateTime DepartureTime = Convert.ToDateTime(its.FlightStat.DepartureTime);
+                              if (FlightNumber == its.FlightStat.FlightNumber && from == its.From && day != 0)
+                              {
+                              }
+                              else
+                              {
+                                  day = 0;
+                              }
+                                }
+                                @its.From.GetValueOrDefault().AddDays(day).ToString("ddd")
+                                @(DepartureTime.ToString("hh:mmt"))
+                            </td>
+                            <td>
+                                @(its.FlightStat.DepartureAirportCode)
+                                <span>@(its.FlightStat.DepartureAirportCity), @(its.FlightStat.DepartureAirportStateCode)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Landing
+                            </td>
+                            <td>
+                                @{
+                                                                          DateTime ArrivalTime = Convert.ToDateTime(its.FlightStat.ArrivalTime);
+                                                                          day = Convert.ToInt32(its.FlightStat.ArrivalDateAdjustment);
+                                }
+                                @its.From.GetValueOrDefault().AddDays(day).ToString("ddd")
+                                @(ArrivalTime.ToString("hh:mmt"))
+                            </td>
+                            <td>
+                                @(its.FlightStat.ArrivalAirportCode)<span>@(its.FlightStat.ArrivalAirportCity),
+                                    @(its.FlightStat.ArrivalAirportStateCode)</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="Business">
+                    <h1>
+                        @(its.Class)</h1>
+                    <p class="MT10">
+                        <span>|</span> <span><b style="font-weight: bold; color: Red">@(its.FlightStat.Seat)
+                            seats remain</b></span> <span>|</span> <span>
+                                @(hours)h @(minutes)m</span> <span>|</span> <span>
+                                    @{
+                                      var wj = string.Empty;
+                                      var widebody = its.FlightStat.WideBody == "true" ? "Wide-body" : "";
+                                      var jet = its.FlightStat.Jet == "true" ? "Jet" : "";
+                                      if (!string.IsNullOrEmpty(widebody))
+                                      {
+                                          wj = "(" + widebody + " " + jet + ")";
+                                      }
+                                      else
+                                      {
+                                          wj = "(" + jet + ")";
+                                      }
+                                    }
+                                    @(its.FlightStat.AircraftTypeName)
+                                    @(its.FlightStat.AircraftTypeCode)
+                                    @(wj)</span> @*<p>
+                            |</p><p>
+                            Fare code: IEE14US4</p>*@ @*<p>
+                            |</p>*@
+                    </p>
+                </div>
+                <div class="Connection">
+                    @*<p class="Logo-Connection">
+                        Connection</p>
+                    <p class="ML100">
+                        DXB<span>Dubai, United Arab Emirates</span></p>
+                    <p style="float: right;">
+                        <span>14h 55m</span></p>*@
+                </div>
+            </div>
+                                from = its.From;
+                                FlightNumber = its.FlightNumber;
+                         }}
+    </div>  
+    }
+}

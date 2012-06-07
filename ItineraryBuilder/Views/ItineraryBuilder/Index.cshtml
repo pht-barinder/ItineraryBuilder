@@ -1,0 +1,455 @@
+﻿@{
+    ViewBag.Title = "ItineraryBuilder";
+}
+@using ItineraryBuilder.Util;
+<div id="FormDiv">
+    <form id="frmItineraryBuilder" action="/ItineraryBuilder/Index" method="post">
+    <input type="hidden" name="opportunityId" id="opportunityId" value="@ViewData["opportunityId"]"/>
+    <input type="hidden" name="flightRequestID" id="flightRequestID" value="@ViewData["flightRequestID"]"/>
+    <input type="hidden" name="passengers" id="passengers" value="@ViewData["passengers"]"/>
+    <input type="hidden" id="showTab" value="1" />
+    @{
+        List<ItineraryBuilder.Models.ItinerarySearch> list = (List<ItineraryBuilder.Models.ItinerarySearch>)(ViewData["ItinerarySearch"]);
+    }
+    <div class="Wrapper">
+        <div class="Grid450 FL MT30">
+            <div class="TopMostDiv">
+                @{int i = 0;
+                  foreach (var grp in list.GroupBy(p => p.FlightID))
+                  {
+                     
+                    <div id="FlightDIV" index="@grp.Key" >
+                        <span id="spnFlight" class="title-streep">Flight
+                            @grp.Key</span>
+                        <div style="margin: 0 0 20px 20px">
+                            <table>
+                                <thead>
+                                    <th align="left">
+                                    </th>
+                                    <th align="left">
+                                        Airline
+                                    </th>
+                                    <th align="left">
+                                        Flight #
+                                    </th>
+                                    <th align="left">
+                                        Class
+                                    </th>
+                                    <th align="left">
+                                        Date
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in list.Where(p => p.FlightID == grp.Key))
+                                    {
+                                        <tr class="clsTR">
+                                            <td>
+                                                S@(i + 1)
+                                                <input type="hidden" class="clsId" name="list[@i].Id" value="@(item.Id)"/>
+                                                <input type="hidden" class="clsFlightID" name="list[@i].FlightID" value="@(item.FlightID)"/>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="clsAirlineCode" name="list[@i].AirlineCode" value="@(item.AirlineCode)" style="width: 40px" 
+                                               onblur="Submit(this);"/>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="clsFlightNumber" name="list[@i].FlightNumber" value="@(item.FlightNumber)" style="width: 50px" 
+                                               onblur="Submit(this);" />
+                                            </td>
+                                            <td>
+                                                <select id="class" class="clsClass" name="Class">
+                                                    @foreach (ItineraryBuilder.Models.ClassTypes cls in Enum.GetValues(typeof(ItineraryBuilder.Models.ClassTypes)))
+                                                    {
+                                                        if (item.Class == cls)
+                                                        {
+                                                        <option value="@cls" selected="selected">@cls.UtilGetEnumAsString(true)</option>
+                                                        }
+                                                        else
+                                                        {
+                                                        <option value="@cls">@cls.UtilGetEnumAsString(true)</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="clsFrom date" name="list[@i].From" value="@(item.FromDate)" autocomplete="off" style="width: 110px"
+                                                 onblur="Submit(this);"/>
+                                                <a href="javascript:void(0);" onclick="return RemoveSegment(this);" class="icon-remove">
+                                                </a>
+                                            </td>
+                                        </tr>
+                                                                                                                i += 1;
+                                    }
+                                </tbody>
+                            </table>
+                            <a href="javascript:void(0);" id="addNewSegment" onclick="AddNewSegment(this);">+ add
+                                segment</a>
+                        </div>
+                    </div>
+                  }}
+            </div>
+            <div style="clear: both; margin-top: 10px">
+                <a href="javascript:void(0);" id="addNewFlight">+ add flight</a><br />
+                @*<input type="submit" value="Submit" style="margin-top: 20px" />*@
+            </div>
+        </div>
+        <div class="Grid600 FR">
+            <a id="tab1" href="javascript:void(0);" onclick="ShowView(1,this)" class="tab">AFG View</a>
+            <a id="tab2" href="javascript:void(0);" onclick="ShowView(2,this)" class="tab">Customer View</a>
+            <div class="Hline">
+            </div>
+            <div id="DivResult" class="result-panel">
+                @if (ViewData["Result"] != null)
+                {
+                    list = (List<ItineraryBuilder.Models.ItinerarySearch>)(ViewData["Result"]);
+                    @Html.Partial("UcItineraryBuilder", list)
+                }
+            </div>
+        </div>
+    </div>
+    <div id="DivTemp" style="display: none; margin: 30px 0 0;">
+        <span class="title-streep"><span id="spnFlight">Flight 1</span> <a href="#" onclick="return RemoveFlight(this);"
+            class="icon-remove FR"></a></span>
+        <div class="Clear">
+        </div>
+        <div style="margin: 0 0 20px 20px">
+            <table>
+                <thead>
+                    <th>
+                    </th>
+                    <th align="left">
+                        Airline
+                    </th>
+                    <th align="left">
+                        Flight #
+                    </th>
+                    <th align="left">
+                        Class
+                    </th>
+                    <th align="left">
+                        Date
+                    </th>
+                </thead>
+                <tbody>
+                    <tr class="clsTR">
+                        <td>
+                            S1
+                            <input type="hidden" class="clsId" name="Id" />
+                            <input type="hidden" class="clsFlightID" name="FlightID" />
+                        </td>
+                        <td>
+                            <input type="text" class="clsAirlineCode" name="AirlineCode" style="width: 40px"
+                                onblur="Submit(this);" />
+                        </td>
+                        <td>
+                            <input type="text" class="clsFlightNumber" name="FlightNumber" style="width: 50px"
+                                onblur="Submit(this);" />
+                        </td>
+                        <td>
+                            <select id="class" class="clsClass" name="Class">
+                                @foreach (ItineraryBuilder.Models.ClassTypes cls in Enum.GetValues(typeof(ItineraryBuilder.Models.ClassTypes)))
+                                {
+                                    <option value="@cls">@cls.UtilGetEnumAsString(true)</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="clsFrom date" name="FromDate" style="width: 110px" onblur="Submit(this);" />
+                            <a href="javascript:void(0);" onclick="return RemoveSegment(this);" class="icon-remove">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr class="clsTR">
+                        <td>
+                            <span>S2</span>
+                            <input type="hidden" class="clsId" name="Id" />
+                            <input type="hidden" class="clsFlightID" name="FlightID" />
+                        </td>
+                        <td>
+                            <input type="text" class="clsAirlineCode" name="AirlineCode" style="width: 40px"
+                                onblur="Submit(this);" />
+                        </td>
+                        <td>
+                            <input type="text" class="clsFlightNumber" name="FlightNumber" style="width: 50px"
+                                onblur="Submit(this);" />
+                        </td>
+                        <td>
+                            <select id="class" class="clsClass" name="Class">
+                                @foreach (ItineraryBuilder.Models.ClassTypes cls in Enum.GetValues(typeof(ItineraryBuilder.Models.ClassTypes)))
+                                {
+                                    <option value="@cls">@cls.UtilGetEnumAsString(true)</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="clsFrom date" name="FromDate" style="width: 110px" onblur="Submit(this);" />
+                            <a href="javascript:void(0);" onclick="return RemoveSegment(this);" class="icon-remove">
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="javascript:void(0);" id="a2" onclick="AddNewSegment(this);">+add segment</a>
+        </div>
+    </div>
+    <table id="segmentTR">
+        <tr style="display: none" class="clsTR">
+            <td>
+                <span>S1</span>
+                <input type="hidden" class="clsId" name="Id" />
+                <input type="hidden" class="clsFlightID" name="FlightID" />
+            </td>
+            <td>
+                <input type="text" class="clsAirlineCode" name="AirlineCode" style="width: 40px"
+                    onblur="Submit(this);" />
+            </td>
+            <td>
+                <input type="text" class="clsFlightNumber" name="FlightNumber" style="width: 50px"
+                    onblur="Submit(this);" />
+            </td>
+            <td>
+                <select id="class" class="clsClass" name="Class">
+                    @foreach (ItineraryBuilder.Models.ClassTypes cls in Enum.GetValues(typeof(ItineraryBuilder.Models.ClassTypes)))
+                    {
+                        <option value="@cls">@cls.UtilGetEnumAsString(true)</option>
+                    }
+                </select>
+            </td>
+            <td>
+                <input type="text" class="clsFrom date" name="FromDate" style="width: 110px" onblur="Submit(this);" />
+                <a href="javascript:void(0);" onclick="return RemoveSegment(this);" class="icon-remove">
+                </a>
+            </td>
+        </tr>
+    </table>
+    </form>
+    <div id="loading" style="display: none; position: absolute;">
+        <div style="top: 150px; left: 800px; position: relative">
+            <img src="../../Content/Images/loading.gif" alt="loading" />
+        </div>
+    </div>
+    <div id="divHiddenResult" style="display: none">
+    </div>
+    <script type="text/javascript">
+        var cls = "";
+        $(document).ready(function () {
+            ShowView($("#showTab").val(),1);
+            CheckKeyWord();
+
+            var jAddNewFlight = $("#addNewFlight");
+            jAddNewFlight.attr("href", "javascript:void( 0 )").click(function (objEvent) {
+                AddNewFlight();
+                objEvent.preventDefault();
+                return (false);
+            });
+
+        });
+        function GetData() {
+            $.get("http://localhost:50434/ItineraryBuilder/GetCustomerView?opportunityId=006d0000005nU0DAAU&flightRequestID=a00d0000003pSE2AAM", function (data) {
+                alert(data);
+            });
+        }
+        function AddNewSegment(e) {
+            var obj = $(e);
+            var jLinkContainer = $(obj).parents("div:first").find("tbody");
+            var jLinkTemplate = $("#segmentTR tr");
+            var jLink = jLinkTemplate.clone();
+            var intRowIndex = (jLinkContainer.find(".clsTR").length);
+            var intRowCount = intRowIndex + 1;
+            $(jLink).find("span").html("S" + intRowCount);
+            $(jLink).find(".clsFlightID").val($(obj).parents("#FlightDIV").attr("index"));
+            jLink.attr("id", (""));
+            jLink.show();
+            jLinkContainer.append(jLink);
+            ReIndexRows();
+            CheckKeyWord();
+            return false;
+        }
+
+        function AddNewFlight() {
+            var jLinkContainer = $(".TopMostDiv");
+            var jLinkTemplate = $("#DivTemp");
+            var jLink = jLinkTemplate.clone();
+            var intNewLinkCount = (jLinkContainer.find("#FlightDIV").length + 1);
+            $(jLink).find(".clsFlightID").val(intNewLinkCount);
+            $(jLink).find("#spnFlight").html("Flight " + intNewLinkCount);
+            jLink.attr("id", "FlightDIV");
+            jLink.attr("index", intNewLinkCount);
+            var inputCount = (jLinkContainer).find(".tr").length + 1;
+            jLink.show();
+            jLinkContainer.append(jLink);
+            ReIndexRows();
+            CheckKeyWord();
+            return false;
+        }
+
+        function ReIndexRows() {
+            var jMainContainer = $("#FlightDIV").parents("div:first");
+
+            $(jMainContainer).find("#FlightDIV").each(function (index) {
+                var number = parseInt(index) + 1;
+                $(this).find("#spnFlight").html("Flight" + number);
+                $(this).attr("index", index + 1);
+            });
+
+            $(jMainContainer).find(".clsTR").each(function (index) {
+                $(this).find("input").each(function () {
+                    if ($(this).hasClass("clsId")) {
+                        $(this).attr("name", "list[" + index + "].Id");
+                    }
+                    else if ($(this).hasClass("clsFlightID")) {
+                        $(this).attr("name", "list[" + index + "].FlightID");
+                        $(this).val($(this).parents("div:first#FlightDIV").attr("index"));
+                    }
+                    else if ($(this).hasClass("clsAirlineCode")) {
+                        $(this).attr("name", "list[" + index + "].AirlineCode");
+                    }
+                    else if ($(this).hasClass("clsFlightNumber")) {
+                        $(this).attr("name", "list[" + index + "].FlightNumber");
+                    }
+                    else if ($(this).hasClass("clsFrom")) {
+                        $(this).attr("name", "list[" + index + "].FromDate");
+                    }
+                });
+                $(this).find("select").each(function () {
+                    if ($(this).hasClass("clsClass")) {
+                        $(this).attr("name", "list[" + index + "].Class");
+                    }
+                });
+            });
+
+        }
+
+        function RemoveSegment(e) {
+            var obj = $(e);
+            var id = $(obj).parents("tr").find(".clsId").val();
+            var ailreline = $(obj).parents("tr").find(".clsAirlineCode").val();
+            if ($(obj).parents("table").find(".clsTR").length == 1) {
+                $(obj).parents("#FlightDIV").remove();
+                ReIndexRows();
+            }
+            else {
+                $(obj).parents("tr:first").remove();
+                ReIndexRows();
+            }
+            //if (id !="" && ailreline != "") {
+            RemoveFlightData();
+            //}
+            return false;
+        }
+
+        function RemoveFlight(e) {
+            var obj = $(e);
+            $(obj).parents("div:first").remove();
+            ReIndexRows();
+            RemoveFlightData();
+            return false;
+        }
+
+        function Submit(e, isDelete) {
+            var obj = $(e);
+            if ($(obj).val() != "") {
+                var ailreline = $(obj).parents("tr:first").find(".clsAirlineCode").val();
+                var flightNumber = $(obj).parents("tr:first").find(".clsFlightNumber").val();
+                var fromDate = $(obj).parents("tr:first").find(".clsFrom").val();
+                var flightClass = $(obj).parents("tr:first").find(".clsClass").val();
+                var id = $(obj).parents("tr:first").find(".clsId").val();
+                var flightID = $(obj).parents("tr:first").find(".clsFlightID").val();
+                if (id == "") {
+                    id = 0;
+                }
+                var rowID = $(obj).parents("tr:first").attr("id");
+                var oppID = $("#opportunityId").val();
+                var frID = $("#flightRequestID").val();
+                var passengers = $("#passengers").val();
+                var frm = $("#frmItineraryBuilder").serialize();
+
+                var flag = true;
+                if (fromDate != "") {
+                    if (flightClass == "Choose") {
+                        flag = false;
+                        alert("Please select class!");
+                    }
+                }
+
+                if (flag) {
+                    $.post("/ItineraryBuilder/GetFlightData", { opportunityId: oppID, flightRequestID: frID,passengers:passengers,
+                        ailreline: ailreline, flightNumber: flightNumber, fromDate: fromDate, flightClass: flightClass,
+                        id: id, flightID: flightID, isDelete: isDelete, rowID: rowID
+                    }, function (data) {
+                        $("#DivResult").html(data);
+                        var msg = $("#msg").val();
+                        if (msg != "") {
+                            alert(msg);
+                        }
+                        else {
+                            if ($(obj).parents("tr:first").find(".clsId").val() == 0) {
+                                $(obj).parents("tr:first").find(".clsId").val($("#LastId").val());
+                            }
+                        }
+                        ShowView($("#showTab").val(), $("#showTab").val());
+                    });
+                }
+            }
+        }
+
+        function RemoveFlightData() {
+            var oppID = $("#opportunityId").val();
+            var frID = $("#flightRequestID").val();
+            var frm = $("#frmItineraryBuilder").serialize();
+            $.post("/ItineraryBuilder/RemoveFlightData?opportunityId=" + oppID + "&flightRequestID=" + frID, frm, function (data) {
+                $("#DivResult").html(data);
+                ShowView($("#showTab").val(), $("#showTab").val());
+            });
+        }
+
+        function CheckKeyWord() {
+            $(".clsFrom").keydown(function (event) {
+                // Allow: backspace, delete, tab, escape, and enter
+                if (event.keyCode == 46 || event.keyCode == 8 || event.keyCode == 9 || event.keyCode == 27
+                        || event.keyCode == 13 || event.keyCode == 191 || event.keyCode == 111 ||
+                // Allow: Ctrl+A
+                    (event.keyCode == 65 && event.ctrlKey === true) ||
+                // Allow: home, end, left, right
+                    (event.keyCode >= 35 && event.keyCode <= 39)) {
+                    // let it happen, don't do anything
+                    return;
+                }
+                else {
+                    // Ensure that it is a number and stop the keypress
+                    if (event.shiftKey || (event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+                        event.preventDefault();
+                    }
+                }
+            });
+        }
+
+
+        function ShowView(id, obj) {
+            if (id == 1) {
+                $("#AFGView").show();
+                $(".tab").removeClass("active");
+                $("#CustomerViewDiv").hide();
+                $("#showTab").val(1);
+                if (obj == "1") {
+                    $("#tab1").addClass("active");
+                }
+                else {
+                    $(obj).addClass("active");
+                }
+            }
+            else {
+                $("#CustomerViewDiv").show();
+                $("#AFGView").hide();
+                $("#showTab").val(2);
+                $(".tab").removeClass("active");
+                if (obj == "2") {
+                    $("#tab2").addClass("active");
+                }
+                else {
+                    $(obj).addClass("active");
+                }
+            }
+        }
+    </script>
+</div>

@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItineraryBuilder", "ItineraryBuilder\ItineraryBuilder.csproj", "{6C8C0E23-384C-4C69-A252-4991C6815B01}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{BF8C300C-CBBA-4233-BCC5-091267F298AC}"
+	ProjectSection(SolutionItems) = preProject
+		References\EntityFramework.dll = References\EntityFramework.dll
+		References\log4net.dll = References\log4net.dll
+		References\StructureMap.AutoMocking.XML = References\StructureMap.AutoMocking.XML
+		References\StructureMap.dll = References\StructureMap.dll
+		References\StructureMap.XML = References\StructureMap.XML
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C8C0E23-384C-4C69-A252-4991C6815B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C8C0E23-384C-4C69-A252-4991C6815B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C8C0E23-384C-4C69-A252-4991C6815B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C8C0E23-384C-4C69-A252-4991C6815B01}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

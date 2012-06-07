@@ -1,0 +1,134 @@
+﻿@model List<ItineraryBuilder.Models.ItinerarySearch>
+@{
+    ItineraryBuilder.Repository.DbRepository _db = new ItineraryBuilder.Repository.DbRepository();
+}
+@functions {
+    private int RandomNumber(int min, int max)
+    {
+        Random random = new Random();
+        return random.Next(min, max);
+    }
+        }
+@if (Model != null && Model.Count > 0)
+{
+    foreach (var grp in Model.GroupBy(p => p.FlightID))
+    {
+        TimeSpan t = TimeSpan.FromMinutes(grp.Sum(p => p.FlightStat.FlightDurationMinutes));
+        var hours = (int)t.TotalHours;
+        var minutes = t.Minutes;
+        
+    <div class="Info Clear">
+        <div class="Info-Header">
+            <p class="Logo-Plane">
+                Flight
+                @grp.Key</p>
+            <p class="ML35">
+                @grp.FirstOrDefault().From.GetValueOrDefault().ToString("ddd, MMM dd")</p>
+            <p class="ML20">
+                @grp.FirstOrDefault().FlightStat.DepartureAirportCode<span> to </span>@grp.LastOrDefault().FlightStat.ArrivalAirportCode@*<span> - 1 stop</span>*@</p>
+            <p style="float: right">
+                @(hours)h @(minutes)m</p>
+        </div>
+        @foreach (var its in Model.Where(p => p.FlightID == grp.Key).OrderBy(p => p.FlightStat.DepartureTime))
+        {
+            int i = _db.GetFlightDataByItineraryID(its.Id).Count();
+            int j = 1;
+            t = TimeSpan.FromMinutes(its.FlightStat.FlightDurationMinutes);
+            hours = (int)t.TotalHours;
+            minutes = t.Minutes;
+
+            <div class="Info-Inner">
+                <div class="Flights">
+                    @(its.FlightStat.CarrierName)
+                    - Flight @(its.FlightStat.FlightNumber)<p>
+                        @(hours)h @(minutes)m</p>
+                </div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Take-off
+                            </td>
+                            <td>
+                                @(its.FlightStat.DepartureTime)
+                            </td>
+                            <td>
+                                @(its.FlightStat.DepartureAirportCode)
+                                <span>@(its.FlightStat.DepartureAirportCity), @(its.FlightStat.DepartureAirportStateCode)</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Landing
+                            </td>
+                            <td>
+                                @(its.FlightStat.ArrivalTime)
+                            </td>
+                            <td>
+                                @(its.FlightStat.ArrivalAirportCode)<span>@(its.FlightStat.ArrivalAirportCity),
+                                    @(its.FlightStat.ArrivalAirportStateCode)</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="Business">
+                    <h1>
+                        @(its.Class)</h1>
+                    <div class="MT10">
+                        <p>
+                            |</p>
+                        <p>
+                            @{
+                    var wj = string.Empty;
+                    var widebody = its.FlightStat.WideBody == "true" ? "Wide-body" : "";
+                    var jet = its.FlightStat.Jet == "true" ? "Jet" : "";
+                    if (!string.IsNullOrEmpty(widebody))
+                    {
+                        wj = widebody + " " + jet;
+                    }
+                    else
+                    {
+                        wj = jet;
+                    }
+                            }
+                            @(its.FlightStat.AircraftTypeName)
+                            @(its.FlightStat.AircraftTypeCode)
+                            (@(wj))</p>
+                        <p>
+                            |</p>
+                        <p>
+                            @(hours)h @(minutes)m</p>
+                        <p>
+                            |</p>
+                        @*<p>
+                            Fare code: IEE14US4</p>*@
+                        <p>
+                            |</p>
+                        <p>
+                            @(RandomNumber(j, 9))
+                            seats remain</p>
+                    </div>
+                </div>
+                <div class="Connection">
+                    @*<p class="Logo-Connection">
+                        Connection</p>
+                    <p class="ML100">
+                        DXB<span>Dubai, United Arab Emirates</span></p>
+                    <p style="float: right;">
+                        <span>14h 55m</span></p>*@
+                </div>
+            </div>
+                        j += 1;
+        }
+    </div>  
+    }
+}
+<input type="hidden" value="@ViewBag.Id" id="LastId"/>
+<input type="hidden" value="@ViewData["Message"]" id="msg"/>
+<script type="text/javascript">
+    function DeleteFlightLeg(e, id, oppid, frID) {
+        $.post("/ItineraryBuilder/DeleteFlightStat?id=" + id + "&OpportunityId=" + oppid + "&FlightRequestID=" + frID, function (data) {
+            $("#DivResult").html(data);
+        });
+    }
+</script>

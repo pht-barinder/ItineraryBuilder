@@ -1,0 +1,482 @@
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ General Classes */
+.DI {
+    display: inline;
+}
+.DB {
+    display: block;
+}
+.FL {
+    float: left;
+}
+.FR {
+    float: right;
+}
+.CL {
+    clear: left;
+}
+.CR {
+    clear: right;
+}
+.Clear {
+    clear: both;
+}
+.PR {
+    position: relative;
+}
+.PA {
+    position: absolute;
+}
+
+.LAlign {
+    text-align: left;
+}
+.CAlign {
+    text-align: center;
+}
+.RAlign {
+    text-align: right;
+}
+.TAlign {
+    vertical-align: top;
+}
+.MAlign {
+    vertical-align: middle;
+}
+.BAlign {
+    vertical-align: bottom;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Heading */
+h1, h2, h3, h4, h5, h6 {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+h1 {
+    font-size: 35px;
+    line-height: 40px;
+}
+h2 {
+    font-size: 32px;
+    line-height: 36px;
+}
+h3 {
+    font-size: 24px;
+    line-height: 28px;
+}
+h4 {
+    font-size: 16px;
+    line-height: 22px;
+}
+h5 {
+    font-size: 12px;
+    line-height: 14px;
+    font-weight: normal !important;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ /end Heading */
+
+.TxtRed {
+    color: #ff0000 !important;
+}
+
+.F10 {
+    font-size: 10px;
+}
+.F12 {
+    font-size: 12px;
+}
+.F12 {
+    font-size: 12px;
+}
+
+a {
+    color: #00a4e4;
+    font-size: 14px;
+    line-height: 18px;
+    cursor: pointer;
+    text-decoration: none;
+}
+a:hover {
+    color: #27b7e6;
+    text-decoration: underline;
+}
+
+.Hline  {   width:100%;
+            background: #656565;
+            height:1px;
+            margin-top:5px;
+}
+.Hline-a {
+    float: left;
+    width: 568px;
+    height: 5px;
+    margin-top: 10px;
+    background: #eee;
+}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Margin */
+.MT5 {
+    margin-top: 5px;
+}
+.MT10 {
+    margin-top: 10px;
+}
+.MT20 {
+    margin-top: 20px;
+}
+.MT30 {
+    margin-top: 30px;
+}
+.MT40 {
+    margin-top: 40px;
+}
+.MT50 {
+    margin-top: 50px;
+}
+
+.MR5 {
+    margin-right: 5px;
+}
+.MR10 {
+    margin-right: 10px;
+}
+.MR20 {
+    margin-right: 20px;
+}
+.MR30 {
+    margin-right: 30px;
+}
+.MR40 {
+    margin-right: 40px;
+}
+.MR50 {
+    margin-right: 50px;
+}
+
+.ML5 {
+    margin-left: 5px;
+}
+.ML10 {
+    margin-left: 10px;
+}
+.ML20 {
+    margin-left: 20px;
+}
+.ML30 {
+    margin-left: 30px;
+}
+.ML35 {
+    margin-left: 35px;
+}
+.ML40 {
+    margin-left: 40px;
+}
+.ML50 {
+    margin-left: 50px;
+}
+.ML100 {
+    margin-left: 100px;
+}
+
+.MB5 {
+    margin-bottom: 5px;
+}
+.MB10 {
+    margin-bottom: 10px;
+}
+.MB20 {
+    margin-bottom: 20px;
+}
+.MB30 {
+    margin-bottom: 30px;
+}
+.MB40 {
+    margin-bottom: 40px;
+}
+.MB50 {
+    margin-bottom: 50px;
+}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ /end Margin */
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Width (DON'T USE PADDING WHILE USING THIS ) */
+.W25 {
+    width: 23%;
+}
+.W30 {
+    width: 28%;
+}
+.W40 {
+    width: 38%;
+}
+.W50 {
+    width: 48%;
+}
+.W60 {
+    width: 58%;
+}
+.W70 {
+    width: 68%;
+}
+.W75 {
+    width: 73%;
+}
+.W100 {
+    width: 98%;
+}
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ /END Width */
+
+body {
+    color: #333333;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: normal;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.Wrapper {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.Grid450 {
+    width: 450px;
+}
+.Grid600 {
+    width: 600px;
+}
+
+
+
+.Grid {
+    width: 1000px;
+    border: 1px solid #ececec;
+    background: #fff;
+}
+.Grid tr th {
+    background: #000;
+    height: 28px;
+    padding: 8px 5px 0;
+    color: #fff;
+}
+.Grid tr {
+}
+.Grid tr td {
+    border-left: 1px solid #ececec;
+    border-top: 1px solid #ececec;
+    padding: 8px 5px;
+}
+
+
+.TblData {
+    float: left;
+    display: block;
+    overflow: auto;
+    margin: 0;
+}
+.TblData table tr td {
+    padding: 0;
+    border-bottom: 1px solid #ddecd7;
+}
+
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ /end General Classes */
+
+.Info {
+    float: left;
+  /*  width: 550px;
+    background: #f9f9f9;*/
+}
+.Info-Header {
+    float: left;
+    width: 584px;
+    height: 18px;
+    padding: 4px 8px;
+    border-top: 2px solid #e7e7e7;
+    border-bottom: 2px solid #e7e7e7;
+    background: #eee;
+}
+.Info-Header p {
+    float: left;
+    font-size: 14px;
+    line-height: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    margin-top: 2px;
+}
+.Logo-Plane {
+    height: 18px;
+    margin-top: 0px !important;
+    padding: 2px 0 0 25px;
+    background: url(../Images/Logo-Plane.jpg) no-repeat 0 0;
+}
+.Info-Header p span {
+    font-weight: normal;
+}
+.Info-Inner {
+    float: left;
+    width: 568px;
+    margin-left: 32px;
+}
+.Flights {
+    float: left;
+    width: 564px;
+    font-size: 13px;
+    line-height: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: 10px; /*padding-left: 30px;     background: url(../Images/Logo-Emirates.jpg) no-repeat 0 0;&*/
+}
+.Flights p {
+    float: right;
+    font-size: 14px;
+    line-height: 18px;
+    margin: 0 8px 0 0;
+}
+.Info-Inner table {
+    float: left;
+    width: 568px;
+    margin-top: 10px;
+}
+.Info-Inner table tbody tr {
+    width: 530px;
+}
+.Info-Inner table tbody tr:first-child td {
+    border-top: none;
+}
+.Info-Inner table tbody tr td {
+    font-size: 12px;
+    line-height: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    border-top: 2px solid #e7e7e7;
+}
+.Info-Inner table tbody tr td span {
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+.Logo-Connection {
+    height: 12px;
+    padding-left: 24px;
+    background: url(../Images/Logo-Connection.jpg) no-repeat 0 0;
+}
+.Business {
+    float: left;
+    width: 568px;
+    margin-top: 5px;
+}
+.Business h1 {
+    float: left;
+  /*  width: 75px;*/
+    font-size: 14px;
+    line-height: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    color: #1d6dcf;
+    margin: 7px 0 0;
+    padding-right:5px;
+}
+.Business span {
+    font-size: 12px;
+    line-height: 16px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    color: #999;
+    margin: 0 1px;
+}
+/* _________________________________ icons */
+.icon-remove {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    background: url(../Images/icon-sprite.png) no-repeat 0 0;
+}
+.icon-remove:hover {
+    background: url(../Images/icon-sprite.png) no-repeat 0 -16px;
+}
+
+
+/* _________________________________ Form Data */
+input[type=text] {
+    height: 20px;
+    border: 1px solid #b7b7b7;
+    background: #f9f9f9;
+}
+input[type=text]:focus {
+    border: 1px solid #b7b7b7;
+    border-bottom: 1px solid #000000;
+    background: #ffffff;
+}
+select {
+    height: 20px;
+    border: 1px solid #b7b7b7;
+    background: #f9f9f9;
+}
+
+/* _________________________________ fieldset */
+.fieldset-a {
+    background: #ecfbff;
+    border: none;
+    padding: 0 0 10px 10px;
+    margin: 0 0 35px 0;
+    border-bottom: 1px solid #8eb8c3;
+}
+
+.fieldset-a legend,
+.title-streep {
+    background: #c9eef7;
+    padding: 2px 15px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: bold;
+}
+.title-streep    {   display:block;  }
+
+/* _________________________________ Grid, table */
+.grid-a {
+    margin-bottom: 10px;
+    padding:0;
+}
+.grid-a thead tr th {
+    padding:6px 0;
+    border-bottom:2px solid #cccccc;
+    text-align:left;
+}
+.grid-a tbody tr td {
+    border-right:1px solid #dddddd;
+    border-bottom:1px solid #dddddd;
+    padding:4px 4px 4px 6px;
+    text-align:left;
+}
+.grid-a tbody tr td:last-child {
+    border-right:none;
+}
+/* _________________________________ Grid, table */
+.tab {
+    padding: 6px 20px;
+    border-radius: 10px 10px 0 0;
+    text-decoration: none;
+    color: #4b4b4b;
+    background: #c9c9c9; /* Old browsers */
+    background: -moz-linear-gradient(top,  #c9c9c9 0%, #a5a5a5 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#c9c9c9), color-stop(100%,#a5a5a5)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #c9c9c9 0%,#a5a5a5 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #c9c9c9 0%,#a5a5a5 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #c9c9c9 0%,#a5a5a5 100%); /* IE10+ */
+    background: linear-gradient(top,  #c9c9c9 0%,#a5a5a5 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c9c9c9', endColorstr='#a5a5a5',GradientType=0 ); /* IE6-9 */
+}
+.tab:hover,
+.tab.active {
+    color: #ffffff;
+    background: #bcbcbc; /* Old browsers */
+    background: -moz-linear-gradient(top,  #bcbcbc 0%, #939393 50%, #686868 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#bcbcbc), color-stop(50%,#939393), color-stop(100%,#686868)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #bcbcbc 0%,#939393 50%,#686868 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #bcbcbc 0%,#939393 50%,#686868 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #bcbcbc 0%,#939393 50%,#686868 100%); /* IE10+ */
+    background: linear-gradient(top,  #bcbcbc 0%,#939393 50%,#686868 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bcbcbc', endColorstr='#686868',GradientType=0 ); /* IE6-9 */
+}
+
+.result-panel   {   margin-top:2px; }

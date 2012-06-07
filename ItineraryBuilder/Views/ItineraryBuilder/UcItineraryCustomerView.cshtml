@@ -1,0 +1,134 @@
+﻿@model List<ItineraryBuilder.Models.ItinerarySearch>
+@{
+    
+    Layout = null;
+
+    ItineraryBuilder.Repository.DbRepository _db = new ItineraryBuilder.Repository.DbRepository();
+}
+@if (Model != null && Model.Count > 0)
+{
+    int j = 1;
+
+    foreach (var grp in Model.GroupBy(p => p.FlightID))
+    {
+        TimeSpan t = TimeSpan.FromMinutes(grp.Sum(p => p.FlightStat.FlightDurationMinutes));
+        var hours = (int)t.TotalHours;
+        var minutes = t.Minutes;
+    <div style="float: left;width: 550px;background: #f9f9f9;clear:both;">
+        <div style="float: left;width: 534px;height: 18px;padding: 4px 8px;border-top: 2px solid #e7e7e7;border-bottom: 2px solid #e7e7e7;background: #eee;">
+            <p style="float: left;height: 18px;font-size:14px;font-weight:bold;font-family: Arial, Helvetica, sans-serif;margin: 0px !important;padding: 2px 0 0 25px;background: url(../Images/Logo-Plane.jpg) no-repeat 0 0;">
+                Flight
+                @grp.Key</p>
+            <p style="float: left;font-size: 14px;line-height: 18px;font-family: Arial, Helvetica, sans-serif;font-weight: bold;margin:2px 0 0 35px;">
+                @grp.Min(p => p.From).Value.ToString("ddd, MMM dd")</p>
+            <p style="float: left;font-size: 14px;line-height: 18px;font-family: Arial, Helvetica, sans-serif;font-weight: bold;margin:2px 0 0 20px;">
+                @grp.OrderBy(p => p.From).ThenBy(p => p.FlightStat.DepartureDateTo).ThenBy(p => p.FlightStat.DepartureTime).FirstOrDefault().FlightStat.DepartureAirportCode<span style="font-size: 14px;line-height: 18px;font-family: Arial, Helvetica, sans-serif;font-weight: normal;margin:0 3px;">
+                    to </span>@grp.OrderBy(p => p.From).ThenBy(p => p.FlightStat.DepartureDateTo).ThenBy(p => p.FlightStat.DepartureTime).LastOrDefault().FlightStat.ArrivalAirportCode@*<span> - 1 stop</span>*@</p>
+            @*<p style="float: right">
+                @(hours)h @(minutes)m</p>*@
+        </div>
+        @{
+                         int day = 0;
+                         string FlightNumber = string.Empty;
+                         DateTime? from = null;
+                         foreach (var its in Model.Where(p => p.FlightID == grp.Key).OrderBy(p => p.From).ThenBy(p => p.FlightStat.DepartureDateTo).ThenBy(p => p.FlightStat.DepartureTime))
+                         {
+                             int i = _db.GetFlightDataByItineraryID(its.Id).Count();
+
+                             t = TimeSpan.FromMinutes(its.FlightStat.FlightDurationMinutes);
+                             hours = (int)t.TotalHours;
+                             minutes = t.Minutes;
+
+            <div style="float: left;width: 530px;margin-left: 20px;">
+                <div style="float: left;width: 500px;font-size: 16px;line-height: 20px;font-family: Arial, Helvetica, sans-serif;margin-top: 10px;">
+                    @(its.FlightStat.CarrierName)
+                    - Flight @(its.FlightStat.FlightNumber)<p style="float: right;font-size: 14px;line-height: 18px;margin: 0 8px 0 0;">
+                        @(hours)h @(minutes)m</p>
+                </div>
+                <table style="float: left;width: 530px;margin-top: 10px;">
+                    <tbody>
+                        <tr style="width:530px;">
+                            <td style="width:100px;font-size: 12px;line-height: 16px;font-family: Arial, Helvetica, sans-serif;font-weight: bold;border-top: none;">
+                                Take-off
+                            </td>
+                            <td style="width: 100px;font-size: 12px;line-height: 16px;font-family: Arial, Helvetica, sans-serif;font-weight: bold;border-top: none;">
+                                @{
+                              DateTime DepartureTime = Convert.ToDateTime(its.FlightStat.DepartureTime);
+                              if (FlightNumber == its.FlightStat.FlightNumber && from == its.From && day != 0)
+                              {
+                              }
+                              else
+                              {
+                                  day = 0;
+                              }
+                                }
+                                @its.From.GetValueOrDefault().AddDays(day).ToString("ddd")
+                                @(DepartureTime.ToString("hh:mmt"))
+                            </td>
+                            <td style="font-size: 12px;line-height: 16px;font-family: Arial, Helvetica, sans-serif;font-weight: bold;border-top: none">
+                                @(its.FlightStat.DepartureAirportCode)
+                                <span style="font-weight: normal;margin-left: 5px;">@(its.FlightStat.DepartureAirportCity), @(its.FlightStat.DepartureAirportStateCode)</span>
+                            </td>
+                        </tr>
+                        <tr style="width:530px;">
+                            <td style="font-size: 12px;line-height: 16px;font-family: Arial, Helvetica, sans-serif;font-weight: bold;border-top: 2px solid #e7e7e7;;">
+                                Landing
+                            </td>
+                            <td style="width: 100px;font-size: 12px;line-height: 16px;font-family: Arial, Helvetica, sans-serif;font-weight: bold;border-top: 2px solid #e7e7e7;">
+                                @{
+                                                                          DateTime ArrivalTime = Convert.ToDateTime(its.FlightStat.ArrivalTime);
+                                                                          day = Convert.ToInt32(its.FlightStat.ArrivalDateAdjustment);
+                                }
+                                @its.From.GetValueOrDefault().AddDays(day).ToString("ddd")
+                                @(ArrivalTime.ToString("hh:mmt"))
+                            </td>
+                            <td style="width: 100px;font-size: 12px;line-height: 16px;font-family: Arial, Helvetica, sans-serif;font-weight: bold;border-top: 2px solid #e7e7e7;">
+                                @(its.FlightStat.ArrivalAirportCode)<span style="font-weight: normal;margin-left: 5px;">@(its.FlightStat.ArrivalAirportCity),
+                                    @(its.FlightStat.ArrivalAirportStateCode)</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div style="float: left;width: 520px;margin-top: 5px;padding-right: 10px;">
+                    <h1 style="float: left;width: 75px;font-size: 16px;line-height: 20px;font-family: Arial, Helvetica, sans-serif;font-weight: normal;color: #1d6dcf;margin: 10px 0 0;">
+                        @(its.Class)</h1>
+                    <p style="margin-top:10px;">
+                        <span style="font-size: 14px;line-height: 20px;font-family: Arial, Helvetica, sans-serif;font-weight: normal;color: #999;margin: 0 5px;">|</span> <span style="font-size: 14px;line-height: 20px;font-family: Arial, Helvetica, sans-serif;font-weight: normal;color: #999;margin: 0 5px;"><b style="font-weight: bold; color: Red">@(its.FlightStat.Seat)
+                            seats remain</b></span> <span style="font-size: 14px;line-height: 20px;font-family: Arial, Helvetica, sans-serif;font-weight: normal;color: #999;margin: 0 5px;">|</span> <span style="font-size: 14px;line-height: 20px;font-family: Arial, Helvetica, sans-serif;font-weight: normal;color: #999;margin: 0 5px;">
+                                @(hours)h @(minutes)m</span> <span style="font-size: 14px;line-height: 20px;font-family: Arial, Helvetica, sans-serif;font-weight: normal;color: #999;margin: 0 5px;">|</span> <span style="font-size: 14px;line-height: 20px;font-family: Arial, Helvetica, sans-serif;font-weight: normal;color: #999;margin: 0 5px;">
+                                    @{
+                                      var wj = string.Empty;
+                                      var widebody = its.FlightStat.WideBody == "true" ? "Wide-body" : "";
+                                      var jet = its.FlightStat.Jet == "true" ? "Jet" : "";
+                                      if (!string.IsNullOrEmpty(widebody))
+                                      {
+                                          wj = "(" + widebody + " " + jet + ")";
+                                      }
+                                      else
+                                      {
+                                          wj = "(" + jet + ")";
+                                      }
+                                    }
+                                    @(its.FlightStat.AircraftTypeName)
+                                    @(its.FlightStat.AircraftTypeCode)
+                                    @(wj)</span> @*<p>
+                            |</p><p>
+                            Fare code: IEE14US4</p>*@ @*<p>
+                            |</p>*@
+                    </p>
+                </div>
+                <div style="float: left;width: 514px;height: 5px;margin-top: 10px;background: #eee;">
+                    @*<p class="Logo-Connection">
+                        Connection</p>
+                    <p class="ML100">
+                        DXB<span>Dubai, United Arab Emirates</span></p>
+                    <p style="float: right;">
+                        <span>14h 55m</span></p>*@
+                </div>
+            </div>
+                                from = its.From;
+                                FlightNumber = its.FlightNumber;
+                         }}
+    </div>  
+    }
+}

@@ -1,0 +1,16 @@
+D:\Websites\itinerary.swiftsetup.com\bin\ItineraryBuilder.dll
+D:\Websites\itinerary.swiftsetup.com\bin\ItineraryBuilder.pdb
+D:\Websites\itinerary.swiftsetup.com\bin\EntityFramework.xml
+D:\Websites\itinerary.swiftsetup.com\bin\StructureMap.xml
+D:\Websites\itinerary.swiftsetup.com\obj\Debug\ResolveAssemblyReference.cache
+D:\Websites\itinerary.swiftsetup.com\obj\Debug\ItineraryBuilder.dll
+D:\Websites\itinerary.swiftsetup.com\obj\Debug\ItineraryBuilder.pdb
+C:\SalesForce Projects\ItineraryBuilder\ItineraryBuilder\bin\ItineraryBuilder.dll
+C:\SalesForce Projects\ItineraryBuilder\ItineraryBuilder\bin\ItineraryBuilder.pdb
+C:\SalesForce Projects\ItineraryBuilder\ItineraryBuilder\bin\EntityFramework.dll
+C:\SalesForce Projects\ItineraryBuilder\ItineraryBuilder\bin\StructureMap.dll
+C:\SalesForce Projects\ItineraryBuilder\ItineraryBuilder\bin\EntityFramework.xml
+C:\SalesForce Projects\ItineraryBuilder\ItineraryBuilder\bin\StructureMap.xml
+C:\SalesForce Projects\ItineraryBuilder\ItineraryBuilder\obj\Debug\ResolveAssemblyReference.cache
+C:\SalesForce Projects\ItineraryBuilder\ItineraryBuilder\obj\Debug\ItineraryBuilder.dll
+C:\SalesForce Projects\ItineraryBuilder\ItineraryBuilder\obj\Debug\ItineraryBuilder.pdb
